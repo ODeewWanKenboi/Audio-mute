@@ -1,0 +1,23 @@
+// Check if the browser supports the Web Audio API
+if (window.AudioContext || window.webkitAudioContext) {
+  // Create an AudioContext
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+  // Create an empty audio buffer
+  const buffer = audioContext.createBuffer(1, 1, audioContext.sampleRate);
+  const source = audioContext.createBufferSource();
+  source.buffer = buffer;
+
+  // Connect the source to the audio context (this is required for Safari)
+  source.connect(audioContext.destination);
+
+  // Start the audio context
+  source.start();
+
+  // Mute the audio
+  source.volume = 0;
+
+  // The audio is now effectively muted in Safari
+} else {
+  console.error('Web Audio API is not supported in this browser.');
+}
